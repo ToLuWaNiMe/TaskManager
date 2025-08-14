@@ -15,6 +15,7 @@ using Serenity.Localization;
 using Serenity.Navigation;
 using System.Data.Common;
 using System.IO;
+using TaskManager.TaskManager;
 
 namespace TaskManager;
 
@@ -90,6 +91,7 @@ public partial class Startup
             loggingBuilder.AddDebug();
         });
 
+        services.AddSingleton<ITaskSaveHandler, TaskSaveHandler>();
         services.AddSingleton<IDataMigrations, AppServices.DataMigrations>();
         services.AddSingleton<IElevationHandler, DefaultElevationHandler>();
         services.AddSingleton<IEmailSender, EmailSender>();
