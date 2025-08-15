@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Serenity.Data;
 using Serenity.Reporting;
-using Serenity.Services;
-using Serenity.Web;
-using System;
-using System.Data;
 using System.Globalization;
+using TaskManager.Modules.TaskManager.Task;
 using MyRow = TaskManager.TaskManager.TaskRow;
 
 namespace TaskManager.TaskManager.Endpoints;
@@ -14,6 +9,33 @@ namespace TaskManager.TaskManager.Endpoints;
 [ConnectionKey(typeof(MyRow)), ServiceAuthorize(typeof(MyRow))]
 public class TaskEndpoint : ServiceEndpoint
 {
+    private readonly ISqlConnections connections;
+
+    public TaskEndpoint(ISqlConnections connections)
+    {
+        this.connections = connections;
+    }
+
+    public IEnumerable<TaskSummaryResult> Generate(IUnitOfWork uow, TaskSummaryRequest request)
+    {
+        var sql = @"SELECT 
+                            Priority = CASE Priority 
+                                WHEN 1 THEN 'Low' 
+                                WHEN 2 THEN 'Medium' 
+                                WHEN 3 THEN 'High' END,
+                            Count = COUNT(*),
+                            Completed = SUM(CASE WHEN IsCompleted = 1 THEN 1 ELSE 0 END)
+                        FROM Tasks
+                        WHERE DueDate BETWEEN @start AND @end
+                        GROUP BY Priority";
+
+        return Dapper.SqlMapper.Query<TaskSummaryResult>(uow.Connection, sql, new
+        {
+            start = request.StartDate ?? DateTime.MinValue,
+            end = request.EndDate ?? DateTime.MaxValue
+        });
+    }
+
     [HttpPost, AuthorizeCreate(typeof(MyRow))]
     public SaveResponse Create(IUnitOfWork uow, SaveRequest<MyRow> request,
         [FromServices] ITaskSaveHandler handler)
