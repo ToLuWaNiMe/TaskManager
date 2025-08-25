@@ -45,7 +45,6 @@ public sealed class TaskRow : Row<TaskRow.RowFields>, IIdRow, INameRow
         public DateTimeField InsertDate;
 
     }
-
 }
 
 public enum TaskPriority
