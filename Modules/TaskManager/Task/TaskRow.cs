@@ -4,6 +4,7 @@ using Serenity.Data.Mapping;
 using System;
 using System.ComponentModel;
 
+
 namespace TaskManager.TaskManager;
 
 [ConnectionKey("Default"), Module("TaskManager"), TableName("Tasks")]
