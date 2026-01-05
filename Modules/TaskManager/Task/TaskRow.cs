@@ -44,7 +44,6 @@ public sealed class TaskRow : Row<TaskRow.RowFields>, IIdRow, INameRow
         public Int32Field Priority;
         public BooleanField IsCompleted;
         public DateTimeField InsertDate;
-
     }
 }
 
