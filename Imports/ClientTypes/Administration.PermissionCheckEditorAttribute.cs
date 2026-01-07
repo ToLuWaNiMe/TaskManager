@@ -1,4 +1,4 @@
-﻿using Serenity;
+using Serenity;
 using Serenity.ComponentModel;
 using System;
 using System.Collections.Generic;
@@ -12,8 +12,7 @@ public partial class PermissionCheckEditorAttribute : CustomEditorAttribute
 
     public PermissionCheckEditorAttribute()
         : base(Key)
-    {
-    }
+    {}
 
     public object ImplicitPermissions
     {
