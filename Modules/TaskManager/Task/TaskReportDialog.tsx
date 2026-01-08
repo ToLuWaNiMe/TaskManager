@@ -7,6 +7,7 @@ export class TaskReportDialog extends EntityDialog<TaskSummaryRequest, any> {
     protected getFormKey() {
         return TaskReportForm.formKey;
     }
+
     protected form = new TaskReportForm(this.idPrefix);
 
     protected onDialogOpen() {
